@@ -1,0 +1,11 @@
+# Example lines in the Ubuntu 24.04 /var/log/auth.log format (reference only, not real evidence).
+# Prefer copying REAL lines from web01. Ubuntu 24.04 may use an ISO-8601 timestamp, as shown in
+# the second block. Use whichever format your server actually writes.
+
+# Classic syslog format:
+Nov  5 10:15:01 web01 sshd[2101]: Failed password for admin01 from 10.10.10.150 port 51122 ssh2
+Nov  5 10:15:05 web01 sshd[2101]: Failed password for admin01 from 10.10.10.150 port 51122 ssh2
+Nov  5 10:15:09 web01 sshd[2103]: Failed password for invalid user testuser from 10.10.10.150 port 51130 ssh2
+
+# ISO-8601 format (rsyslog default on newer Ubuntu releases):
+2026-11-05T10:15:01.123456+05:30 web01 sshd[2101]: Failed password for admin01 from 10.10.10.150 port 51122 ssh2

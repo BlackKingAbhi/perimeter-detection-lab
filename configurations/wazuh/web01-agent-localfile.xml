@@ -1,0 +1,24 @@
+<!--
+  Add inside <ossec_config> in /var/ossec/etc/ossec.conf on web01 ONLY if these
+  log files are not already listed there (check first with:
+  sudo grep -A3 "<localfile>" /var/ossec/etc/ossec.conf).
+  Then: sudo systemctl restart wazuh-agent
+-->
+<ossec_config>
+  <!-- SSH logins and sudo usage -->
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/auth.log</location>
+  </localfile>
+
+  <!-- Every web request: client IP, URL, status code, user agent -->
+  <localfile>
+    <log_format>apache</log_format>   <!-- Nginx's default log format uses the same decoder -->
+    <location>/var/log/nginx/access.log</location>
+  </localfile>
+
+  <localfile>
+    <log_format>apache</log_format>
+    <location>/var/log/nginx/error.log</location>
+  </localfile>
+</ossec_config>

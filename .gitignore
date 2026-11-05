@@ -1,0 +1,29 @@
+# Secrets and keys — never commit
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+.env
+*.secret
+passwords*.txt
+
+# Raw OPNsense config exports (contain password hashes / private keys)
+config-*.xml
+configurations/opnsense/*.xml
+
+# VM images and large files
+*.iso
+*.iso.bz2
+*.ova
+*.vdi
+*.vmdk
+*.pcap
+*.pcapng
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/

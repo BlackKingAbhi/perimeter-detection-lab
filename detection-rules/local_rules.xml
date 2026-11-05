@@ -1,0 +1,50 @@
+<!--
+  Custom Wazuh rules for the Small Office Network Security & Monitoring Lab.
+  Location on the manager: /var/ossec/etc/rules/local_rules.xml
+
+  STATUS: written, NOT yet verified. Test with /var/ossec/bin/wazuh-logtest and save the
+  output to detection-rules/logtest-output.txt before claiming it works.
+
+  Custom rule IDs must be in the 100000-120000 range so they never clash with Wazuh's built-in rules.
+-->
+
+<group name="local,sshd,authentication_failures,">
+
+  <!--
+    Rule 100100: repeated SSH login failures from one source address.
+
+    How it works:
+      - if_matched_sid 5760 : count earlier events that matched built-in rule 5760
+                              ("sshd: authentication failed").
+      - frequency="5"        : fire when 5 such events are seen ...
+      - timeframe="60"       : ... within 60 seconds ...
+      - same_srcip           : ... and they all come from the SAME source IP.
+      - level="10"           : high severity (0-15 scale), so it stands out on the dashboard.
+      - mitre T1110.001      : MITRE ATT&CK "Brute Force: Password Guessing".
+
+    Alert only. No automatic blocking (active response) in this beginner version.
+  -->
+  <rule id="100100" level="10" frequency="5" timeframe="60">
+    <if_matched_sid>5760</if_matched_sid>
+    <same_srcip />
+    <description>Lab: 5+ failed SSH logins from the same source within 60s (possible password guessing)</description>
+    <mitre>
+      <id>T1110.001</id>
+    </mitre>
+    <group>pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+
+  <!--
+    Rule 100101: same idea for logins with usernames that do not exist (built-in rule 5710).
+    Attackers often try common names like "admin", "test" or "oracle".
+  -->
+  <rule id="100101" level="10" frequency="5" timeframe="60">
+    <if_matched_sid>5710</if_matched_sid>
+    <same_srcip />
+    <description>Lab: 5+ SSH attempts with non-existent users from the same source within 60s</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+</group>
